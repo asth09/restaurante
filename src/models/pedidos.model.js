@@ -7,17 +7,22 @@ const pedidoSchema = new mongoose.Schema({
         required: [true, 'Especifique la mesa'],
     },
    
-    menus: [
+    desayuno: [
         {
-            menu: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Menu',
-                required: [true, 'Debe haber al menos un producto']
-            },
-            cantidad: {
-                type: Number,
-                required: [true, 'Especifique la cantidad de productos']
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Menu'
+        }
+    ],
+    almuerzo: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Menu'
+        }
+    ],
+    bebidas: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Menu'
         }
     ],
     metodo: {

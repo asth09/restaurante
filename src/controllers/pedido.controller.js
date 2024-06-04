@@ -3,7 +3,7 @@ import Menu from '../models/menu.model.js'
 
 export const getpedidos = async(req, res) => {
     try {
-        const pedidos = await Pedido.find()
+        const pedidos = await Pedido.find().populate('meseros', 'usuario') .populate('mesa', 'numesa') 
         res.json(pedidos)
     } catch (error) {
         return res.status(404).json({ message: "Registro no encontrado"})
@@ -11,50 +11,26 @@ export const getpedidos = async(req, res) => {
 }
 
 export const createpedidos = async (req, res) => {
-    const { mesa, menus, metodo } = req.body;
-
-    let session;
-
-    console.log(req.user);
-
     try {
-        const session = await Pedido.startSession(); // Inicia una sesión de transacción
-        session.startTransaction(); // Inicia la transacción
+        const { mesa, desayuno, almuerzo, bebidas, metodo } = req.body;
 
-        // Itera sobre los productos de la venta para actualizar la cantidad en la colección de productos
-        for (const item of menus) {
-            const menuId = item.menu;
-            const cantidadVendida = item.cantidad;
-
-            // Busca el producto en la base de datos y actualiza la cantidad
-            await Menu.findByIdAndUpdate(menuId, { $inc: { existencia: -cantidadVendida } });
-        }
-
-        const newPedido = new Pedido({
+        const nuevoPedido = new Pedido({
             mesa,
-            menus,
+            desayuno,
+            almuerzo,
+            bebidas,
             metodo,
-            meseros: req.user.id
+            meseros:req.user.id
         });
 
-        const savedPedido = await newPedido.save();
+        await nuevoPedido.save();
 
-        await session.commitTransaction(); // Confirma la transacción
-        session.endSession(); // Finaliza la sesión
-
-        res.json(savedPedido);
+        res.status(201).json({ message: 'Pedido creado exitosamente', data: nuevoPedido });
     } catch (error) {
-        if (session) {
-            if (session.abortTransaction) {
-                await session.abortTransaction(); // Cancela la transacción si está disponible
-            }
-            session.endSession(); // Finaliza la sesión
-        }
-
-        console.error(error);
-        res.status(500).json({ message: 'Error al realizar el pedido' });
+        res.status(500).json({ error: 'Ocurrió un error al crear el pedido', message: error.message });
     }
-}
+};
+
 
 export const getpedido = async(req, res) => {
     try {

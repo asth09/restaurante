@@ -2,7 +2,7 @@ import Mesa from '../models/mesas.model.js'
 
 export const getmesas = async(req, res) => {
     try {
-        const mesas = await Mesa.find();
+        const mesas = await Mesa.find().populate('mesero', 'usuario');
         res.json(mesas);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -22,7 +22,7 @@ export const createmesas = async(req, res) => {
         ubicacion,
         descripcion,
         comentarios,
-        vendedor: req.user.id
+        mesero: req.user.id
         });
         const savedMesa = await newMesa.save();
         res.json(savedMesa);

@@ -63,6 +63,21 @@ export const deletemenus = async(req, res) => {
     }
 }
 
+export const getMenuByType = async (req, res) => {
+    try {
+      const tipo = req.query.tipo; // Obtener el tipo de la consulta (por ejemplo, /menus?tipo=principal)
+      const menus = await Menu.find({ tipo }); // Buscar menús con el tipo especificado
+  
+      if (menus.length === 0) {
+        return res.status(404).json({ message: "No se encontraron menús con ese tipo" });
+      }
+  
+      res.json(menus); // Devolver la lista de menús encontrados
+    } catch (error) {
+      return res.status(500).json({ message: "Error al buscar menús" });
+    }
+  };
+  
 export const getClientes = async (req, res) => {
     /* obtengo y valido 'pagina' de la query */
     const { pagina } = req.query;

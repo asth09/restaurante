@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authRequired } from "../middlewares/validateToken.js";
+import { authRequired, validateUserRole } from "../middlewares/validateToken.js";
 import { getpedidos,
     getpedido,
     createpedidos,
@@ -15,7 +15,7 @@ router.get('/pedidos/:id', authRequired, getpedido)
 
 router.post('/pedidos', authRequired,  createpedidos)
 
-router.delete('/pedidos/:id', authRequired, deletepedidos)
+router.delete('/pedidos/:id', validateUserRole, deletepedidos)
 
 router.put('/pedidos/:id', authRequired, updatepedidos)
 

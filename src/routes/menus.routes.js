@@ -4,7 +4,8 @@ import { getmenus,
     getmenu,
     createmenus,
     updatemenus,
-    deletemenus } from "../controllers/menu.controller.js";   
+    deletemenus,
+    getMenuByType } from "../controllers/menu.controller.js";   
 
 const router = Router()
 
@@ -18,5 +19,6 @@ router.delete('/menus/:id', validateUserRole, deletemenus)
 
 router.put('/menus/:id', validateUserRole, updatemenus)
 
+router.get('/menu', validateUserRoles, getMenuByType)
 
 export default router

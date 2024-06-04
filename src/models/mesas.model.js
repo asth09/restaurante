@@ -27,9 +27,7 @@ const mesaShema = new mongoose.Schema({
     },
     mesero: { 
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        
-        
+        ref: 'User', 
     },
 }, {versionKey:false});
 

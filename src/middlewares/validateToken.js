@@ -69,7 +69,7 @@ export const validateUserRoles = (req, res, next) => {
 
             // Verificar el rol del usuario desde el token
             const { role } = user;
-            if (role !== 'ADMIN' && role !== 'vendedor') {
+            if (role !== 'ADMIN' && role !== 'mesero') {
                 return res.status(403).json({ message: "No tienes permisos para acceder a esta funcionalidad" });
             }
 
